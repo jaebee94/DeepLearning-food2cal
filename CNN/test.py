@@ -24,11 +24,11 @@ pixels = image_w * image_h * 3
 
 X = []
 Y = []
-for idx, food_list in enumerate(food_list):
+for idx, food in enumerate(food_list):
     label = [0 for _ in range(classes_number)]
     label[idx] = 1
 
-    image_dir = foods_dir + "/" + food_list
+    image_dir = foods_dir + "/" + food
     files = glob.glob(image_dir + "/*.jpg")
     for i, f in enumerate(files):
         img = Image.open(f)
@@ -37,7 +37,7 @@ for idx, food_list in enumerate(food_list):
         data = np.asarray(img)
         X.append(data)
         Y.append(label)
-    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food_list))
+    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food))
 X = np.array(X)
 Y = np.array(Y)
 

@@ -4,10 +4,24 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 import numpy as np
 import os
 
+from openpyxl import load_workbook
+
 # 카테고리 지정
-foods_dir = "../datasets/train"
-foodnames = os.listdir(foods_dir)
-classes_number = len(foodnames)
+# foods_dir = "../datasets/train"
+# foodnames = os.listdir(foods_dir)
+# classes_number = len(foodnames)
+
+foods_dir = "./datasets/train"
+# food_list = os.listdir(foods_dir)
+
+f = load_workbook('../datasets/nutrition.xlsx')
+xl_sheet = f.active
+rows = xl_sheet['F2:F840']
+food_list = []
+for row in rows:
+    for cell in row:
+        food_list.append(cell.value)
+classes_number = len(food_list)
 
 # 이미지 크기 지정하기
 image_w = 64
@@ -36,9 +50,9 @@ model.add(Dropout(0.25))
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(4096))   # 출력
-model.add(Activation('relu'))
-model.add(Dropout(0.5))
+# model.add(Dense(4096))   # 출력
+# model.add(Activation('relu'))
+# model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))
 model.add(Activation('softmax'))
