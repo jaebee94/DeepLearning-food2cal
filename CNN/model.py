@@ -36,7 +36,7 @@ model.add(Dropout(0.25))
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(512))   # 출력
+model.add(Dense(4096))   # 출력
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
@@ -58,7 +58,7 @@ if os.path.exists(hdf5_file):
     model.load_weights(hdf5_file)
 else:
     # 학습한 모델이 없으면 파일로 저장
-    model.fit(X_train, y_train, batch_size=32, epoch=10)
+    model.fit(X_train, y_train, batch_size=32, epoch=3)
     model.save_weights(hdf5_file)
 
 
