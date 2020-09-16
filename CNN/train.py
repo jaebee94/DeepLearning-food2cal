@@ -55,18 +55,18 @@ test_datagen = ImageDataGenerator(rescale=1./255)
 train_generator = train_datagen.flow_from_directory(
         '../datasets/train',
         target_size=(150, 150),
-        batch_size=len_category,
+        batch_size=50,
         class_mode='categorical')
 
 validation_generator = validation_datagen.flow_from_directory(
         '../datasets/validation',
         target_size=(150, 150),
-        batch_size=len_category,
+        batch_size=50,
         class_mode='categorical')
 
 model.fit_generator(
         train_generator,
-        steps_per_epoch=50 * len_category,
+        steps_per_epoch=len_category,
         validation_data=validation_generator,
         epochs=20)
 
