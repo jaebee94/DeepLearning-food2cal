@@ -58,11 +58,7 @@ if os.path.exists(hdf5_file):
     model.load_weights(hdf5_file)
 else:
     # 학습한 모델이 없으면 파일로 저장
-<<<<<<< HEAD
-    model.fit(X_train, y_train, batch_size=32, epochs=10)
-=======
-    model.fit(X_train, y_train, batch_size=32, epoch=3)
->>>>>>> 84c8a3a8ddf49983d773f63ee0f1ed9042d739d5
+    model.fit(X_train, y_train, batch_size=32, epochs=3)
     model.save_weights(hdf5_file)
 
 
