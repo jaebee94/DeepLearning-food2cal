@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 
 import os
 
-foods_dir = "./datasets/train"
+foods_dir = "../datasets/train"
 # food_list = os.listdir(foods_dir)
 
 f = load_workbook('../datasets/nutrition.xlsx')
