@@ -2,12 +2,21 @@ from PIL import Image
 import os, glob
 import numpy as np
 from sklearn.model_selection import train_test_split
+from openpyxl import load_workbook
 
 import os
 
 foods_dir = "./datasets/train"
-foodnames = os.listdir(foods_dir)
-classes_number = len(foodnames)
+# food_list = os.listdir(foods_dir)
+
+f = load_workbook('../datasets/nutrition.xlsx')
+xl_sheet = f.active
+rows = xl_sheet['F2:F840']
+food_list = []
+for row in rows:
+    for cell in row:
+        food_list.append(cell.value)
+classes_number = len(food_list)
 
 image_w = 64
 image_h = 64
@@ -15,11 +24,11 @@ pixels = image_w * image_h * 3
 
 X = []
 Y = []
-for idx, foodname in enumerate(foodnames):
+for idx, food_list in enumerate(food_list):
     label = [0 for _ in range(classes_number)]
     label[idx] = 1
 
-    image_dir = foods_dir + "/" + foodname
+    image_dir = foods_dir + "/" + food_list
     files = glob.glob(image_dir + "/*.jpg")
     for i, f in enumerate(files):
         img = Image.open(f)
@@ -28,7 +37,7 @@ for idx, foodname in enumerate(foodnames):
         data = np.asarray(img)
         X.append(data)
         Y.append(label)
-    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, foodname))
+    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food_list))
 X = np.array(X)
 Y = np.array(Y)
 
