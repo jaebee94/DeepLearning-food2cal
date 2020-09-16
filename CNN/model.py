@@ -4,6 +4,10 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 import numpy as np
 import os
 
+from PIL import Image
+import os, glob
+import numpy as np
+from sklearn.model_selection import train_test_split
 from openpyxl import load_workbook
 
 # 카테고리 지정
