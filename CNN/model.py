@@ -133,7 +133,7 @@ print('accuracy=', score[1])    # acc
 #     print(food_list[result[i]])
 
 test_list = os.listdir('../datasets/test')
-for idx, test in test_list:
+for idx, test in enumerate(test_list):
     test_image = '../datasets/test' + test
     img = Image.open(test_image)
     img = img.convert("RGB")
