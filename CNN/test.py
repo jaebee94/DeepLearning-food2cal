@@ -45,5 +45,5 @@ X_train, X_test, y_train, y_test = train_test_split(X, Y)
 xy = (X_train, X_test, y_train, y_test)
 
 
-np.save("./datasets/dataset.npy", xy)
+np.save("../datasets/dataset.npy", xy)
 print('save complete!')

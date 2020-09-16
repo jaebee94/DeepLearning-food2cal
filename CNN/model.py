@@ -11,7 +11,7 @@ from openpyxl import load_workbook
 # foodnames = os.listdir(foods_dir)
 # classes_number = len(foodnames)
 
-foods_dir = "./datasets/train"
+foods_dir = "../datasets/train"
 # food_list = os.listdir(foods_dir)
 
 f = load_workbook('../datasets/nutrition.xlsx')
@@ -67,13 +67,13 @@ print(model.summary())
 
 # 학습 완료된 모델 저장
 hdf5_file = "./food_model.hdf5"
-if os.path.exists(hdf5_file):
-    # 기존에 학습된 모델 불러들이기
-    model.load_weights(hdf5_file)
-else:
-    # 학습한 모델이 없으면 파일로 저장
-    model.fit(X_train, y_train, batch_size=32, epochs=3)
-    model.save_weights(hdf5_file)
+# if os.path.exists(hdf5_file):
+#     # 기존에 학습된 모델 불러들이기
+#     model.load_weights(hdf5_file)
+# else:
+#     # 학습한 모델이 없으면 파일로 저장
+model.fit(X_train, y_train, batch_size=32, epochs=3)
+model.save_weights(hdf5_file)
 
 
 # 모델 평가하기 
