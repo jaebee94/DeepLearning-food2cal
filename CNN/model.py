@@ -134,7 +134,7 @@ print('accuracy=', score[1])    # acc
 
 test_list = os.listdir('../datasets/test')
 for idx, test in enumerate(test_list):
-    test_image = '../datasets/test' + test
+    test_image = '../datasets/test/' + test
     img = Image.open(test_image)
     img = img.convert("RGB")
     img = img.resize((64,64))
