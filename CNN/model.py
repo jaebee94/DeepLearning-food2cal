@@ -116,7 +116,7 @@ print('accuracy=', score[1])    # acc
 
 
 # 적용해볼 이미지 
-test_image = './image/test_overturned.jpg'
+test_image = '../datasets/test/라면테스트1.jpeg'
 # 이미지 resize
 img = Image.open(test_image)
 img = img.convert("RGB")
