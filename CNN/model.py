@@ -28,35 +28,35 @@ for row in rows:
 classes_number = len(food_list)
 
 # 이미지 크기 지정하기
-image_w = 64
-image_h = 64
-pixels = image_w * image_h * 3
+# image_w = 64
+# image_h = 64
+# pixels = image_w * image_h * 3
 
-X = []
-Y = []
-for idx, food in enumerate(food_list):
-    label = [0 for _ in range(classes_number)]
-    label[idx] = 1
+# X = []
+# Y = []
+# for idx, food in enumerate(food_list):
+#     label = [0 for _ in range(classes_number)]
+#     label[idx] = 1
 
-    image_dir = foods_dir + "/" + food
-    files = glob.glob(image_dir + "/*.jpg")
-    for i, f in enumerate(files):
-        img = Image.open(f)
-        img = img.convert("RGB")
-        img = img.resize((image_w, image_h))
-        data = np.asarray(img)
-        X.append(data)
-        Y.append(label)
-    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food))
-X = np.array(X)
-Y = np.array(Y)
+#     image_dir = foods_dir + "/" + food
+#     files = glob.glob(image_dir + "/*.jpg")
+#     for i, f in enumerate(files):
+#         img = Image.open(f)
+#         img = img.convert("RGB")
+#         img = img.resize((image_w, image_h))
+#         data = np.asarray(img)
+#         X.append(data)
+#         Y.append(label)
+#     print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food))
+# X = np.array(X)
+# Y = np.array(Y)
 
-X_train, X_test, y_train, y_test = train_test_split(X, Y)
-xy = (X_train, X_test, y_train, y_test)
+# X_train, X_test, y_train, y_test = train_test_split(X, Y)
+# xy = (X_train, X_test, y_train, y_test)
 
 
-np.save("../datasets/dataset.npy", xy)
-print('save complete!')
+# np.save("../datasets/dataset.npy", xy)
+# print('save complete!')
 
 
 
@@ -116,18 +116,34 @@ print('accuracy=', score[1])    # acc
 
 
 # 적용해볼 이미지 
-test_image = '../datasets/test/라면테스트1.jpeg'
-# 이미지 resize
-img = Image.open(test_image)
-img = img.convert("RGB")
-img = img.resize((64,64))
-data = np.asarray(img)
-X = np.array(data)
-X = X.astype("float") / 256
-X = X.reshape(-1, 64, 64,3)
-# 예측
-pred = model.predict(X)  
-result = [np.argmax(value) for value in pred]   # 예측 값중 가장 높은 클래스 반환
-print('New data category : ',food_list[result[0]])
-for i in range(len(result)):
-    print(food_list[result[i]])
+# test_image = '../datasets/test/라면테스트1.jpeg'
+# # 이미지 resize
+# img = Image.open(test_image)
+# img = img.convert("RGB")
+# img = img.resize((64,64))
+# data = np.asarray(img)
+# X = np.array(data)
+# X = X.astype("float") / 256
+# X = X.reshape(-1, 64, 64,3)
+# # 예측
+# pred = model.predict(X)  
+# result = [np.argmax(value) for value in pred]   # 예측 값중 가장 높은 클래스 반환
+# print('New data category : ',food_list[result[0]])
+# for i in range(len(result)):
+#     print(food_list[result[i]])
+
+test_list = os.listdir('../datasets/test')
+for idx, test in test_list:
+    test_image = '../datasets/test' + test
+    img = Image.open(test_image)
+    img = img.convert("RGB")
+    img = img.resize((64,64))
+    data = np.asarray(img)
+    X = np.array(data)
+    X = X.astype("float") / 256
+    X = X.reshape(-1, 64, 64,3)
+    # 예측
+    pred = model.predict(X)  
+    result = [np.argmax(value) for value in pred]   # 예측 값중 가장 높은 클래스 반환
+    print('True category : ', test)
+    print('New data category : ',food_list[result[0]])
