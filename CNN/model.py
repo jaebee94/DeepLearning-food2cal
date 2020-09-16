@@ -129,5 +129,5 @@ X = X.reshape(-1, 64, 64,3)
 pred = model.predict(X)  
 result = [np.argmax(value) for value in pred]   # 예측 값중 가장 높은 클래스 반환
 print('New data category : ',food_list[result[0]])
-for i in range(10):
+for i in range(len(result)):
     print(food_list[result[i]])
