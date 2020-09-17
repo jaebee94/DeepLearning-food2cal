@@ -42,7 +42,6 @@ X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=T
 # X_train = X_train.astype("float32") / 255.0
 # X_test  = X_test.astype("float32")  / 255.0
 print(X_train.shape, X_train.dtype)
-print(X_train)
 # y_train = np_utils.to_categorical(y_train, classes_number)
 # y_test = np_utils.to_categorical(y_test, classes_number)
 
