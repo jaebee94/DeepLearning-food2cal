@@ -31,7 +31,7 @@ for food in food_list:
         x = x.reshape((1,) + x.shape)
 
         i = 0
-        save_to_dir = '../gen_images/' + food
+        save_to_dir = '../gen_images/' + food + '/'
         if not os.path.exists(save_to_dir):
             os.mkdir(save_to_dir)
         for batch in datagen.flow(x, batch_size=1, save_to_dir=save_to_dir, save_prefix='gen_', save_format='jpg'):
