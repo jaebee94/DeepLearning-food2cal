@@ -46,50 +46,78 @@ print(X_train.shape, X_train.dtype)
 # y_test = np_utils.to_categorical(y_test, classes_number)
 
 # 모델 구조 정의 
-model = Sequential()
-model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:], padding='same'))
-model.add(Activation('relu'))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+# model = Sequential()
+# model.add(Conv2D(64, (3, 3), input_shape=X_train.shape[1:], padding='same'))
+# model.add(Activation('relu'))
+# # model.add(MaxPooling2D(pool_size=(2, 2)))
+# # model.add(Dropout(0.25))
 
-model.add(Conv2D(32, (3, 3), padding='same'))
-model.add(Conv2D(16, (1, 1), padding='same'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
-
-model.add(Conv2D(32, (3, 3), padding='same'))
-model.add(Conv2D(16, (1, 1), padding='same'))
-model.add(Activation('relu'))
+# model.add(Conv2D(64, (3, 3), padding='same'))
+# # model.add(Conv2D(16, (1, 1), padding='same'))
+# model.add(Activation('relu'))
 # model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(32, (3, 3), padding='same'))
-model.add(Conv2D(16, (1, 1), padding='same'))
-model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(Conv2D(64, (3, 3), padding='same'))
+# # model.add(Conv2D(16, (1, 1), padding='same'))
+# model.add(Activation('relu'))
+# # # model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(32, (3, 3), padding='same'))
-model.add(Conv2D(16, (1, 1), padding='same'))
-model.add(Activation('relu'))
+# model.add(Conv2D(64, (3, 3), padding='same'))
+# # model.add(Conv2D(16, (1, 1), padding='same'))
+# model.add(Activation('relu'))
 # model.add(MaxPooling2D(pool_size=(2, 2)))
+
+# model.add(Conv2D(64, (3, 3), padding='same'))
+# # model.add(Conv2D(16, (1, 1), padding='same'))
+# model.add(Activation('relu'))
+# # # model.add(MaxPooling2D(pool_size=(2, 2)))
 
 # model.add(Conv2D(64, (3, 3)))
 # model.add(Activation('relu'))
+# # model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(Dropout(0.25))
+
+
+# # 전결합층
+# model.add(Flatten())    # 벡터형태로 reshape
+# model.add(Dense(64))   # 출력
+# # model.add(Activation('relu'))
+# # model.add(Dense(64))   # 출력
+# model.add(Activation('relu'))
+# model.add(Dropout(0.5))
+
+# model.add(Dense(classes_number))
+# # model.add(Dense(1))
+# model.add(Activation('softmax'))
+# # model.add(Activation('sigmoid'))
+
+
+
+### 좋은 결과 ###
+model = Sequential()
+model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:], padding='same'))
+model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
+model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
-# 전결합층
+model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
+
 model.add(Flatten())    # 벡터형태로 reshape
 model.add(Dense(256))   # 출력
-model.add(Activation('relu'))
-model.add(Dense(64))   # 출력
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))
-# model.add(Dense(1))
 model.add(Activation('softmax'))
-# model.add(Activation('sigmoid'))
+
+
 
 # 모델 구축하기
 # adam = optimizers.Adam(lr = 0.001)
