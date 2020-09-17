@@ -38,31 +38,36 @@ X_test  = X_test.astype("float")  / 255
 print(X_train.shape[1:])
 # 모델 구조 정의 
 model = Sequential()
-model.add(Conv2D(64, (3, 3), input_shape=X_train.shape[1:], padding='same'))
+model.add(Conv2D(32, (3, 3), input_shape=(150, 150, 3), padding='same'))
+model.add(Activation('relu'))
+# model.add(Dropout(0.25))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(32, (3, 3), padding='same'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
 
-model.add(Conv2D(128, (3, 3), padding='same'))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
-
-model.add(Conv2D(256, (3, 3)))
+# model.add(Dropout(0.25))
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(512))   # 출력
+model.add(Dense(64))   # 출력
 model.add(Activation('relu'))
-model.add(Dense(512))   # 출력
-model.add(Activation('relu'))
+# model.add(Dense())   # 출력
+# model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))
+# model.add(Dense(1))
 model.add(Activation('softmax'))
+# model.add(Activation('sigmoid'))
 
 # 모델 구축하기
-adam = optimizers.Adam(lr = 0.001)
+# adam = optimizers.Adam(lr = 0.001)
 model.compile(loss='categorical_crossentropy',   # 최적화 함수 지정
     optimizer='rmsprop',
     metrics=['accuracy'])

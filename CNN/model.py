@@ -93,7 +93,7 @@ datagen.fit(X_train)
 
 # model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))
 model.fit(datagen.flow(X_train, y_train, batch_size=30),
-        steps_per_epoch=len(X_train) / 30, epochs=10)
+        steps_per_epoch=len(X_train) / 30, epochs=100)
 
 
 # 학습 완료된 모델 저장
