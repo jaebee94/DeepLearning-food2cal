@@ -81,8 +81,7 @@ for idx, test in enumerate(test_list):
     X = X.astype("float") / 256
     X = X.reshape(-1, 64, 64,3)
     # 예측
-    pred = model.predict(X)  
-    result = [value for value in pred]   # 예측 값중 가장 높은 클래스 반환
+    pred = model.predict(X)
+    print(food_list)
+    print(pred)
     print('True category : ', test)
-    for i, p in enumerate(result):
-        print(i, 'Predict category : ',food_list[result[i]])
