@@ -35,8 +35,8 @@ classes_number = len(food_list)
 X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 
 # 데이터 정규화하기(0~1사이로)
-X_train = X_train.astype("float") / 255
-X_test  = X_test.astype("float")  / 255
+# X_train = X_train.astype("float") / 255
+# X_test  = X_test.astype("float")  / 255
 print(X_train.shape[1:])
 
 # 모델 구조 정의 
@@ -70,7 +70,7 @@ model.add(Activation('softmax'))
 # model.add(Activation('sigmoid'))
 
 # 모델 구축하기
-adam = optimizers.Adam(lr = 0.001)
+# adam = optimizers.Adam(lr = 0.001)
 model.compile(loss='binary_crossentropy',   # 최적화 함수 지정
     optimizer='adam',
     metrics=['accuracy'])
