@@ -67,7 +67,8 @@ model.add(Activation('relu'))
 # model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
-model.add(Dense(classes_number))
+# model.add(Dense(classes_number))
+model.add(Dense(3))
 model.add(Activation('softmax'))
 
 # 모델 구축하기
