@@ -16,11 +16,11 @@ from openpyxl import load_workbook
 
 # 카테고리 생성
 foods_dir = "../images"
-foods_dir = '../gen_images'
+# foods_dir = '../gen_images'
 
 ### 폴더명으로 카테고리 가져오기 ###
 food_list = os.listdir(foods_dir)
-
+food_list.remove('.DS_Store')
 ### 엑셀에서 카테고리 가져오기 ###
 # f = load_workbook('../datasets/nutrition.xlsx')
 # xl_sheet = f.active
@@ -32,13 +32,14 @@ food_list = os.listdir(foods_dir)
 ############################
 
 classes_number = len(food_list)
+
 print('category : ', food_list, classes_number)
 # 데이터 열기 
 X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 
 # 데이터 정규화하기(0~1사이로)
-# X_train = X_train.astype("float32") / 255.0
-# X_test  = X_test.astype("float32")  / 255.0
+X_train = X_train.astype("float32") / 255.0
+X_test  = X_test.astype("float32")  / 255.0
 print(X_train.shape, X_train.dtype)
 print(X_train)
 # y_train = np_utils.to_categorical(y_train, classes_number)
@@ -104,7 +105,7 @@ model_path = MODEL_SAVE_FOLDER_PATH + '{epoch:02d}-{val_loss:.4f}.hdf5'
 checkpoint = ModelCheckpoint(filepath=model_path, monitor='val_loss',
                              verbose=1, save_best_only=True)
 
-model.fit(X_train, y_train, batch_size=64, epochs=100, validation_data=(X_test, y_test), callbacks=[checkpoint])
+model.fit(X_train, y_train, batch_size=64, epochs=15, validation_data=(X_test, y_test), callbacks=[checkpoint])
 
 
 # 학습 완료된 모델 저장
