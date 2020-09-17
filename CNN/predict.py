@@ -141,7 +141,7 @@ for idx, test in enumerate(test_list):
     # X = X.reshape(-1, 64, 64,3)
     # 예측
 X = np.array(X)
-# X = X.astype("float") / 256
+X = X.astype("float") / 255
 pred = model.predict(X)
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 # print(food_list)
