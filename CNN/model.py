@@ -110,7 +110,10 @@ model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(256))   # 출력
+model.add(Dense(512))   # 출력
+model.add(Activation('relu'))
+
+model.add(Dense(128))   # 출력
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
