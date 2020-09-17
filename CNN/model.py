@@ -74,7 +74,7 @@ print(model.summary())
 
 # 학습 완료된 모델 저장
 hdf5_file = "./food_model.hdf5"
-model.fit(X_train, y_train, batch_size=32, epochs=100, validation_data=(X_test, y_test))
+model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))
 model.save_weights(hdf5_file)
 
 
