@@ -49,22 +49,38 @@ print(X_train.shape, X_train.dtype)
 model = Sequential()
 model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:], padding='same'))
 model.add(Activation('relu'))
-model.add(MaxPooling2D(pool_size=(2, 2)))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Conv2D(16, (1, 1), padding='same'))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(64, (3, 3)))
+model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Conv2D(16, (1, 1), padding='same'))
 model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Conv2D(16, (1, 1), padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+
+model.add(Conv2D(32, (3, 3), padding='same'))
+model.add(Conv2D(16, (1, 1), padding='same'))
+model.add(Activation('relu'))
+# model.add(MaxPooling2D(pool_size=(2, 2)))
+
+# model.add(Conv2D(64, (3, 3)))
+# model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Dropout(0.25))
 
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(128))   # 출력
+model.add(Dense(256))   # 출력
 model.add(Activation('relu'))
 model.add(Dense(64))   # 출력
 model.add(Activation('relu'))
@@ -106,7 +122,7 @@ checkpoint = ModelCheckpoint(filepath=model_path, monitor='val_loss',
                              verbose=1, save_best_only=True)
 early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=2, mode='auto')
 
-model.fit(X_train, y_train, batch_size=64, epochs=200, validation_data=(X_test, y_test), callbacks=[checkpoint])
+model.fit(X_train, y_train, batch_size=64, epochs=20, validation_data=(X_test, y_test), callbacks=[checkpoint])
 
 
 # 학습 완료된 모델 저장
