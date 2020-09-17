@@ -25,8 +25,8 @@ food_list = os.listdir(foods_dir)
 classes_number = len(food_list)
 
 # 이미지 크기 지정
-image_w = 64
-image_h = 64
+image_w = 150
+image_h = 150
 pixels = image_w * image_h * 3
 
 X = []
