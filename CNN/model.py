@@ -4,7 +4,7 @@ from keras.models import Sequential
 from keras.layers import MaxPooling2D, Conv2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras.preprocessing.image import ImageDataGenerator
-from keras.callbacks import ModelCheckpoint
+from keras.callbacks import ModelCheckpoint, EarlyStopping
 import numpy as np
 import os
 
@@ -16,11 +16,12 @@ from openpyxl import load_workbook
 
 # 카테고리 생성
 foods_dir = "../images"
-# foods_dir = '../gen_images'
+foods_dir = '../gen_images'
 
 ### 폴더명으로 카테고리 가져오기 ###
 food_list = os.listdir(foods_dir)
-food_list.remove('.DS_Store')
+if '.DS_Store' in food_list:
+    food_list.remove('.DS_Store')
 ### 엑셀에서 카테고리 가져오기 ###
 # f = load_workbook('../datasets/nutrition.xlsx')
 # xl_sheet = f.active
@@ -76,7 +77,7 @@ model.add(Activation('softmax'))
 # model.add(Activation('sigmoid'))
 
 # 모델 구축하기
-# adam = optimizers.Adam(lr = 0.001)
+adam = optimizers.Adam(lr = 0.001)
 model.compile(loss='binary_crossentropy',   # 최적화 함수 지정
     optimizer='adam',
     metrics=['accuracy'])
@@ -104,8 +105,9 @@ if not os.path.exists(MODEL_SAVE_FOLDER_PATH):
 model_path = MODEL_SAVE_FOLDER_PATH + '{epoch:02d}-{val_loss:.4f}.hdf5'
 checkpoint = ModelCheckpoint(filepath=model_path, monitor='val_loss',
                              verbose=1, save_best_only=True)
+early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=2, mode='auto')
 
-model.fit(X_train, y_train, batch_size=64, epochs=15, validation_data=(X_test, y_test), callbacks=[checkpoint])
+model.fit(X_train, y_train, batch_size=64, epochs=200, validation_data=(X_test, y_test), callbacks=[checkpoint])
 
 
 # 학습 완료된 모델 저장

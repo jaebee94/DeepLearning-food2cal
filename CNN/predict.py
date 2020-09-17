@@ -13,10 +13,12 @@ from openpyxl import load_workbook
 
 # 카테고리 생성
 foods_dir = "../images"
+foods_dir = '../gen_images'
 
 ### 폴더명으로 카테고리 가져오기 ###
 food_list = os.listdir(foods_dir)
-food_list.remove('.DS_Store')
+if '.DS_Store' in food_list:
+    food_list.remove('.DS_Store')
 ### 엑셀에서 카테고리 가져오기 ###
 # f = load_workbook('../datasets/nutrition.xlsx')
 # xl_sheet = f.active
@@ -68,17 +70,19 @@ model.add(Activation('softmax'))
 # model.add(Activation('sigmoid'))
 
 # 모델 구축하기
-# adam = optimizers.Adam(lr = 0.001)
+adam = optimizers.Adam(lr = 0.001)
 model.compile(loss='binary_crossentropy',   # 최적화 함수 지정
     optimizer='adam',
     metrics=['accuracy'])
 
-hdf5_file = "../model/10-0.0838.hdf5"
+file_list = os.listdir("../model")
+hdf5_file = "../model/" + file_list.pop()
 model.load_weights(hdf5_file)
 
 X = []
 test_list = os.listdir('../data/test')
-test_list.remove('.DS_Store')
+if '.DS_Store' in test_list:
+    test_list.remove('.DS_Store')
 for idx, test in enumerate(test_list):
     print(idx, test)
     test_image = '../data/test/' + test

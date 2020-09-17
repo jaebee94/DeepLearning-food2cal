@@ -8,11 +8,12 @@ import os
 
 # 카테고리 생성
 foods_dir = "../images"
-# foods_dir = "../gen_images"
+foods_dir = "../gen_images"
 
 ### 폴더명으로 카테고리 가져오기 ###
 food_list = os.listdir(foods_dir)
-food_list.remove('.DS_Store')
+if '.DS_Store' in food_list:
+    food_list.remove('.DS_Store')
 ### 엑셀에서 카테고리 가져오기 ###
 # f = load_workbook('../datasets/nutrition.xlsx')
 # xl_sheet = f.active
