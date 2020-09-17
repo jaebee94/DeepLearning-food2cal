@@ -8,6 +8,7 @@ import os
 
 # 카테고리 생성
 foods_dir = "../images"
+foods_dir = "../gen_images"
 
 ### 폴더명으로 카테고리 가져오기 ###
 food_list = os.listdir(foods_dir)
