@@ -123,7 +123,7 @@ file_list.sort()
 print(file_list)
 hdf5_file = "../model/" + file_list.pop()
 print(hdf5_file)
-# hdf5_file = "./food_model.hdf5"
+hdf5_file = "./food_model.hdf5"
 model.load_weights(hdf5_file)
 
 X = []
