@@ -106,7 +106,7 @@ checkpoint = ModelCheckpoint(filepath=model_path, monitor='val_loss',
                              verbose=1, save_best_only=True)
 early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=2, mode='auto')
 
-model.fit(X_train, y_train, batch_size=64, epochs=200, validation_data=(X_test, y_test), callbacks=[checkpoint, early_stopping])
+model.fit(X_train, y_train, batch_size=64, epochs=200, validation_data=(X_test, y_test), callbacks=[checkpoint])
 
 
 # 학습 완료된 모델 저장

@@ -76,8 +76,11 @@ model.compile(loss='binary_crossentropy',   # 최적화 함수 지정
     metrics=['accuracy'])
 
 file_list = os.listdir("../model")
+file_list.sort()
+print(file_list)
 hdf5_file = "../model/" + file_list.pop()
-hdf5_file = "../model/03-0.7027.hdf5"
+print(hdf5_file)
+# hdf5_file = "../model/03-0.7027.hdf5"
 model.load_weights(hdf5_file)
 
 X = []
