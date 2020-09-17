@@ -1,29 +1,56 @@
-from keras.preprocessing.image import ImageDataGenerator, img_to_array, load_img
+from PIL import Image
+import os, glob
+import numpy as np
 from sklearn.model_selection import train_test_split
-import pandas as pd
+from openpyxl import load_workbook
 
-# Image Data Generator
-datagen = ImageDataGenerator(
-        rotation_range=40,          # 이미지 회전 범위(degrees)
-        width_shift_range=0.2,      # 그림을 수평 또는 수직으로 랜덤하게 평행이동 시키는 범위(비율 값)
-        height_shift_range=0.2,
-        rescale=1./255,             # 0~1 범위로 스케일 변환
-        shear_range=0.2,            # 임의 전단 변환 범위
-        zoom_range=0.2,             # 임의 확대/축소 범위
-        horizontal_flip=True,       # 수평 반전(50% 확률)
-        fill_mode='nearest')        # 회전, 이동, 축소할 때 생기는 공간을 채우는 방식
+import os
 
-img = load_img('data/train/cats/cat.0.jpg')  # PIL 이미지
-x = img_to_array(img)  # (3, 150, 150) 크기의 NumPy 배열
-x = x.reshape((1,) + x.shape)  # (1, 3, 150, 150) 크기의 NumPy 배열
+# 카테고리 생성
+foods_dir = "../images"
 
-i = 0
-for batch in datagen.flow(x, batch_size=1,
-                          save_to_dir='preview', save_prefix='cat', save_format='jpeg'):
-    i += 1
-    if i > 20:
-        break
+### 폴더명으로 카테고리 가져오기 ###
+food_list = os.listdir(foods_dir)
 
-# 엑셀파일 읽기
-foods = pd.read_excel('..\\s03p22a411\\datasets\\nutrition.xlsx', usecols=['식품명'])
-foods["image_paths"] = '..\\s03p22a411\\datasets\\images' + '\\' + foods["식품명"]
+### 엑셀에서 카테고리 가져오기 ###
+# f = load_workbook('../datasets/nutrition.xlsx')
+# xl_sheet = f.active
+# rows = xl_sheet['F2:F840']
+# food_list = []
+# for row in rows:
+#     for cell in row:
+#         food_list.append(cell.value)
+############################
+
+classes_number = len(food_list)
+
+# 이미지 크기 지정
+image_w = 64
+image_h = 64
+pixels = image_w * image_h * 3
+
+X = []
+Y = []
+for idx, food in enumerate(food_list):
+    label = [0 for _ in range(classes_number)]
+    label[idx] = 1
+
+    image_dir = foods_dir + "/" + food
+    files = glob.glob(image_dir + "/*.jpg")
+    for i, f in enumerate(files):
+        img = Image.open(f)
+        img = img.convert("RGB")
+        img = img.resize((image_w, image_h))
+        data = np.asarray(img)
+        X.append(data)
+        Y.append(label)
+    print('{} / {}, {} preprocess complete.'.format(idx, classes_number, food))
+X = np.array(X)
+Y = np.array(Y)
+
+X_train, X_test, y_train, y_test = train_test_split(X, Y)
+xy = (X_train, X_test, y_train, y_test)
+
+
+np.save("../data/dataset.npy", xy)
+print('save complete!')

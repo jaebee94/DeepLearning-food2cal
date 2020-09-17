@@ -140,5 +140,6 @@ dmypy.json
 
 datasets/dataset.npy
 .DS_Store
+.vscode
 
 # End of https://www.toptal.com/developers/gitignore/api/python

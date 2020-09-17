@@ -1,66 +1,83 @@
-# tensorflow, tf.keras 임포트
-import tensorflow as tf
-from tensorflow import keras
-from keras.preprocessing import image
-from keras.preprocessing.image import ImageDataGenerator
-
+from keras.models import Sequential
+from keras.layers import MaxPooling2D, Conv2D
+from keras.layers import Activation, Dropout, Flatten, Dense
+import numpy as np
 import os
 
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
-# 헬퍼(helper) 라이브러리 임포트
+from PIL import Image
+import os, glob
 import numpy as np
-# import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from openpyxl import load_workbook
 
-# 1. 데이터 다운
-# test_image = image.load_img('짬뽕테스트.jpeg', target_size=(150, 150))
-# test_image = test_image.convert('RGB')
-# test_image = test_image / 255.0
-# data = np.asarray(test_image)
+# 카테고리 생성
+foods_dir = "../images"
 
-# 2. 모델 불러오기
-# from keras.models import model_from_json
-# json_file = open("model.json", "r")
-# loaded_model_json = json_file.read()
-# json_file.close()
-# loaded_model = model_from_json(loaded_model_json)
+### 폴더명으로 카테고리 가져오기 ###
+food_list = os.listdir(foods_dir)
 
-# loaded_model = loaded_model.load_weights('test_model.h5')
-model = keras.models.load_model('test_model.h5')
+### 엑셀에서 카테고리 가져오기 ###
+# f = load_workbook('../datasets/nutrition.xlsx')
+# xl_sheet = f.active
+# rows = xl_sheet['F2:F840']
+# food_list = []
+# for row in rows:
+#     for cell in row:
+#         food_list.append(cell.value)
+############################
 
-# 3. 예측 만들기
-# predictions = model.predict(data)
+classes_number = len(food_list)
 
-# print(predictions)
-# # 4. 데이터 시각화
-# def plot_image(i, predictions, true_label, img):
-#     predictions_array, true_label, img = predictions_array[i], true_label[i], img[i]
+# 데이터 열기 
+X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 
-#     plt.imshow(img, cmap=plt.cm.binary)
+# 데이터 정규화하기(0~1사이로)
+X_train = X_train.astype("float") / 256
+X_test  = X_test.astype("float")  / 256
 
-#     predicted_label = np.argmax(predictions_array)
-#     plt.xlabel("Prediction: {} ({} %)\nLabel: {}".format(class_names[predicted_label],
-#                                                         round(100*np.max(predictions_array), 2),
-#                                                         class_names[true_label]))
+# 모델 구조 정의 
+model = Sequential()
+model.add(Conv2D(32, (3, 3), input_shape=X_train.shape[1:], padding='same'))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
 
-# plt.figure(figsize=(10, 10))
-# for i in range(10):
-#     plt.subplot(2,5,i+1)
-#     plt.grid(False)
-#     plot_image(i, predictions, test_labels, test_images)
-# plt.tight_layout()
-# plt.show()
+model.add(Conv2D(64, (3, 3), padding='same'))
+model.add(Activation('relu'))
 
-test_datagen = ImageDataGenerator(rescale=1./255)
+model.add(Conv2D(64, (3, 3)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
 
-test_generator = test_datagen.flow_from_directory(
-        'data/test',
-        target_size=(150, 150),
-        batch_size=32,
-        class_mode='categorical')
+# 전결합층
+model.add(Flatten())    # 벡터형태로 reshape
+model.add(Dense(512))   # 출력
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
 
-print("-- Predict --")
-output = model.predict_generator(test_generator, steps=1)
-np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
-# print(test_generator.class_indices)
-print(output)
+model.add(Dense(classes_number))
+model.add(Activation('softmax'))
+
+# 모델 구축하기
+model.compile(loss='categorical_crossentropy',   # 최적화 함수 지정
+    optimizer='rmsprop',
+    metrics=['accuracy'])
+
+hdf5_file = "./food_model.hdf5"
+model.load_weights(hdf5_file)
+
+test_list = os.listdir('../data/test')
+for idx, test in enumerate(test_list):
+    test_image = '../data/test/' + test
+    img = Image.open(test_image)
+    img = img.convert("RGB")
+    img = img.resize((64,64))
+    data = np.asarray(img)
+    X = np.array(data)
+    X = X.astype("float") / 256
+    X = X.reshape(-1, 64, 64,3)
+    # 예측
+    pred = model.predict(X)  
+    result = [np.argmax(value) for value in pred]   # 예측 값중 가장 높은 클래스 반환
+    print('True category : ', test)
+    print('New data category : ',food_list[result[0]])
