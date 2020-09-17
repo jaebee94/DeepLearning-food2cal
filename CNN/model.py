@@ -1,7 +1,9 @@
 from keras import optimizers
+from keras.utils import np_utils
 from keras.models import Sequential
 from keras.layers import MaxPooling2D, Conv2D
 from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 import os
 
@@ -33,31 +35,36 @@ print('category : ', food_list, classes_number)
 X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 
 # 데이터 정규화하기(0~1사이로)
-X_train = X_train.astype("float") / 255
-X_test  = X_test.astype("float")  / 255
+X_train = X_train.astype("float") / 255.0
+X_test  = X_test.astype("float")  / 255.0
+print(X_train.shape, X_train.dtype)
+
+y_train = np_utils.to_categorical(y_train, classes_number)
+y_test = np_utils.to_categorical(y_test, classes_number)
 
 # 모델 구조 정의 
 model = Sequential()
-model.add(Conv2D(64, (3, 3), input_shape=(150, 150, 3), padding='same'))
+model.add(Conv2D(32, (3, 3), input_shape=(150, 150, 3), padding='same'))
 model.add(Activation('relu'))
-model.add(Dropout(0.25))
+# model.add(Dropout(0.25))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(128, (3, 3), padding='same'))
+model.add(Conv2D(32, (3, 3), padding='same'))
 model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 
-model.add(Conv2D(256, (3, 3)))
+model.add(Conv2D(32, (3, 3)))
 model.add(Activation('relu'))
-model.add(Dropout(0.25))
+# model.add(Dropout(0.25))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(512))   # 출력
+model.add(Dense(64))   # 출력
 model.add(Activation('relu'))
-model.add(Dense(512))   # 출력
-model.add(Activation('relu'))
+# model.add(Dense())   # 출력
+# model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))
@@ -72,9 +79,23 @@ model.compile(loss='categorical_crossentropy',   # 최적화 함수 지정
 # 모델 확인
 print(model.summary())
 
+datagen = ImageDataGenerator(
+    featurewise_center=True,
+    featurewise_std_normalization=True,
+    rotation_range=20,
+    width_shift_range=0.2,
+    height_shift_range=0.2,
+    horizontal_flip=True)
+
+datagen.fit(X_train)
+
+# model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))
+model.fit(datagen.flow(X_train, y_train, batch_size=30),
+        steps_per_epoch=len(X_train) / 30, epochs=10)
+
+
 # 학습 완료된 모델 저장
 hdf5_file = "./food_model.hdf5"
-model.fit(X_train, y_train, batch_size=32, epochs=10, validation_data=(X_test, y_test))
 model.save_weights(hdf5_file)
 
 
