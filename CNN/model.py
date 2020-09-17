@@ -28,7 +28,7 @@ food_list = os.listdir(foods_dir)
 ############################
 
 classes_number = len(food_list)
-print('category : ', classes_number, len(classes_number))
+print('category : ', food_list, classes_number)
 # 데이터 열기 
 X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 

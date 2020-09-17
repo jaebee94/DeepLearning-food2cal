@@ -138,8 +138,8 @@ dmypy.json
 # pytype static type analyzer
 .pytype/
 
-datasets/dataset.npy
+dataset.npy
 .DS_Store
 .vscode
-
+food_model.hdf5
 # End of https://www.toptal.com/developers/gitignore/api/python
