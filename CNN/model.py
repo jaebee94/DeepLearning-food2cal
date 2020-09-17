@@ -39,8 +39,8 @@ print('category : ', food_list, classes_number)
 X_train, X_test, y_train, y_test = np.load("../data/dataset.npy", allow_pickle=True)
 
 # 데이터 정규화하기(0~1사이로)
-# X_train = X_train.astype("float32") / 255.0
-# X_test  = X_test.astype("float32")  / 255.0
+X_train = X_train.astype("float32") / 255.0
+X_test  = X_test.astype("float32")  / 255.0
 print(X_train.shape, X_train.dtype)
 # y_train = np_utils.to_categorical(y_train, classes_number)
 # y_test = np_utils.to_categorical(y_test, classes_number)
@@ -64,10 +64,10 @@ model.add(Dropout(0.25))
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(256))   # 출력
+model.add(Dense(128))   # 출력
 model.add(Activation('relu'))
-# model.add(Dense())   # 출력
-# model.add(Activation('relu'))
+model.add(Dense(64))   # 출력
+model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))

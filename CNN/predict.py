@@ -58,10 +58,10 @@ model.add(Dropout(0.25))
 
 # 전결합층
 model.add(Flatten())    # 벡터형태로 reshape
-model.add(Dense(256))   # 출력
+model.add(Dense(128))   # 출력
 model.add(Activation('relu'))
-# model.add(Dense())   # 출력
-# model.add(Activation('relu'))
+model.add(Dense(64))   # 출력
+model.add(Activation('relu'))
 model.add(Dropout(0.5))
 
 model.add(Dense(classes_number))
@@ -77,6 +77,7 @@ model.compile(loss='binary_crossentropy',   # 최적화 함수 지정
 
 file_list = os.listdir("../model")
 hdf5_file = "../model/" + file_list.pop()
+hdf5_file = "../model/03-0.7027.hdf5"
 model.load_weights(hdf5_file)
 
 X = []
@@ -91,10 +92,10 @@ for idx, test in enumerate(test_list):
     img = img.resize((150,150))
     data = np.asarray(img)
     X.append(data)
-    # X = X.astype("float") / 256
     # X = X.reshape(-1, 64, 64,3)
     # 예측
 X = np.array(X)
+# X = X.astype("float") / 256
 pred = model.predict(X)
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 # print(food_list)
