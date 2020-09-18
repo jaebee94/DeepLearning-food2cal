@@ -11,6 +11,9 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from openpyxl import load_workbook
 
+from urllib import request
+from io import BytesIO
+
 # 카테고리 생성
 foods_dir = "../images"
 # foods_dir = '../gen_images'
@@ -19,6 +22,7 @@ foods_dir = "../images"
 food_list = os.listdir(foods_dir)
 if '.DS_Store' in food_list:
     food_list.remove('.DS_Store')
+print(food_list)
 ### 엑셀에서 카테고리 가져오기 ###
 # f = load_workbook('../datasets/nutrition.xlsx')
 # xl_sheet = f.active
@@ -123,8 +127,18 @@ file_list.sort()
 print(file_list)
 hdf5_file = "../model/" + file_list.pop()
 print(hdf5_file)
-hdf5_file = "./food_model.hdf5"
+# hdf5_file = "./food_model.hdf5"
 model.load_weights(hdf5_file)
+
+url = 'https://photo-storage-ftc.s3.ap-northeast-2.amazonaws.com/image/2020918511234982.jpg'
+res = request.urlopen(url).read()
+image = Image.open(BytesIO(res))
+image = image.convert("RGB")
+image = image.resize((150,150))
+image_data = np.asarray(image)
+I = [image_data]
+I = np.array(I)
+# I = I.reshape(-1, 150, 150, 3)
 
 X = []
 test_list = os.listdir('../data/test')
@@ -143,6 +157,7 @@ for idx, test in enumerate(test_list):
 X = np.array(X)
 X = X.astype("float") / 255
 pred = model.predict(X)
+
 np.set_printoptions(formatter={'float': lambda x: "{0:0.3f}".format(x)})
 # print(food_list)
 # print(pred)
@@ -153,3 +168,7 @@ for i in pred:
     pre_ans = i.argmax()
     print(test_list[cnt], food_list[pre_ans])
     cnt += 1
+
+pred = model.predict(I)
+idx = pred[0].argmax()
+print(food_list[idx])
