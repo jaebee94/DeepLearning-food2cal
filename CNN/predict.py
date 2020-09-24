@@ -139,6 +139,7 @@ image_data = np.asarray(image)
 I = [image_data]
 I = np.array(I)
 I = I.reshape(-1, 150, 150, 3)
+I = I.astype("float") / 255.
 
 X = []
 test_list = os.listdir('../data/test')
