@@ -130,14 +130,14 @@ print(hdf5_file)
 # hdf5_file = "./food_model.hdf5"
 model.load_weights(hdf5_file)
 
-url = 'https://photo-storage-ftc.s3.ap-northeast-2.amazonaws.com/image/2020918511234982.jpg'
-res = request.urlopen(url).read()
-image = Image.open(BytesIO(res))
-image = image.convert("RGB")
-image = image.resize((150,150))
-image_data = np.asarray(image)
-I = [image_data]
-I = np.array(I)
+# url = 'https://photo-storage-ftc.s3.ap-northeast-2.amazonaws.com/image/2020918511234982.jpg'
+# res = request.urlopen(url).read()
+# image = Image.open(BytesIO(res))
+# image = image.convert("RGB")
+# image = image.resize((150,150))
+# image_data = np.asarray(image)
+# I = [image_data]
+# I = np.array(I)
 # I = I.reshape(-1, 150, 150, 3)
 
 X = []
